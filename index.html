@@ -12,16 +12,16 @@
         function rewriteUrl(val) {
           if (typeof val !== 'string') return val;
           if (val.indexOf('//') === 0) return val; // protocol-relative
-          if (val.charAt(0) === '/') return './' + val.slice(1);
+          if (val.indexOf('/assets/') === 0) return './' + val.slice(1);
           return val;
         }
         function maybeRewriteAttr(node, attr) {
           if (!node || !attr) return;
           var v = node.getAttribute(attr);
-          if (v && v.charAt(0) === '/' && v.indexOf('//') !== 0) node.setAttribute(attr, './' + v.slice(1));
+          if (v && v.indexOf('/assets/') === 0) node.setAttribute(attr, './' + v.slice(1));
         }
         document.addEventListener('DOMContentLoaded', function () {
-          var nodes = document.querySelectorAll('[src^="/"], [href^="/"], [poster^="/"]');
+          var nodes = document.querySelectorAll('[src^="/assets/"], [href^="/assets/"], [poster^="/assets/"]');
           nodes.forEach(function (n) {
             ['src','href','poster'].forEach(function (a) { maybeRewriteAttr(n, a); });
           });
