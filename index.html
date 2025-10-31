@@ -43,40 +43,6 @@
         mo.observe(document.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ['src','href','poster'] });
       })();
     </script>
-    <script>
-      (function(){
-        var BASE = '/portfolio';
-        function fix(url){
-          if (typeof url === 'string' && url.charAt(0) === '/' && url.indexOf('//') !== 0) {
-            return BASE + url;
-          }
-          return url;
-        }
-        var origFetch = window.fetch;
-        window.fetch = function(input, init){
-          try{
-            if (typeof input === 'string') return origFetch(fix(input), init);
-            if (input && typeof input.url === 'string') {
-              var req = new Request(fix(input.url), input);
-              return origFetch(req, init);
-            }
-          }catch(e){}
-          return origFetch(input, init);
-        };
-        var origOpen = XMLHttpRequest.prototype.open;
-        XMLHttpRequest.prototype.open = function(method, url){
-          try{ arguments[1] = fix(url); }catch(e){}
-          return origOpen.apply(this, arguments);
-        };
-        var desc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
-        if (desc && desc.set){
-          var origSet = desc.set;
-          Object.defineProperty(HTMLImageElement.prototype, 'src', {
-            set: function(v){ return origSet.call(this, fix(v)); }
-          });
-        }
-      })();
-    </script>
     <script type="module" crossorigin src="./assets/index-f47c7096.js"></script>
     <link rel="stylesheet" href="./assets/index-bbcf74c6.css">
   </head>
