@@ -50,16 +50,36 @@
           }
           if (target) {
             var href = target.getAttribute('href');
-            if (href && href.charAt(0) === '/' && href.indexOf('//') !== 0 && (href.indexOf('/cv/') === 0 || href.indexOf('/assets/') === 0)) {
-              e.preventDefault();
-              var newHref = './' + href.slice(1);
-              if (target.hasAttribute('download')) {
-                var a = document.createElement('a');
-                a.href = newHref;
-                a.download = target.getAttribute('download');
-                a.click();
-              } else {
-                window.location.href = newHref;
+            if (href && href.charAt(0) === '/' && href.indexOf('//') !== 0) {
+              if (href.indexOf('/cv/') === 0) {
+                e.preventDefault();
+                e.stopPropagation();
+                var newHref = '/portfolio' + href;
+                if (target.hasAttribute('download')) {
+                  var a = document.createElement('a');
+                  a.href = newHref;
+                  a.download = target.getAttribute('download') || 'Hassan_Jebri_CV.pdf';
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                } else {
+                  window.open(newHref, '_blank');
+                }
+                return false;
+              } else if (href.indexOf('/assets/') === 0) {
+                e.preventDefault();
+                var newHref = './' + href.slice(1);
+                if (target.hasAttribute('download')) {
+                  var a = document.createElement('a');
+                  a.href = newHref;
+                  a.download = target.getAttribute('download');
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                } else {
+                  window.location.href = newHref;
+                }
+                return false;
               }
             }
           }
